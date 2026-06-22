@@ -20,6 +20,7 @@
     <li><a href="#about">About</a></li>
     <li><a href="#catalog">Catalog</a></li>
     <li><a href="#faq">T&C</a></li>
+    <li><a href="#panduan">Guide</a></li>
     <li><a href="#testimonial">Testimonial</a></li>
     
 </ul>
@@ -172,6 +173,31 @@
         </div>
     </section>
 
+    <!-- Panduan Pendaki Section -->
+    <section class="terms-section panduan-section" id="panduan">
+        <h2 class="terms-title">
+            HIKING GUIDE
+            <span class="guide-subtitle">by Pendakipack</span>
+        </h2>
+
+        <div class="selection-tabs panduan-tabs" id="panduanTabs">
+            <button class="tab-btn active" data-panduan="tektok">TEKTOK</button>
+            <button class="tab-btn" data-panduan="camping">CAMPING</button>
+            <button class="tab-btn" data-panduan="gear">GEAR</button>
+            <button class="tab-btn" data-panduan="cuaca">CUACA</button>
+            <button class="tab-btn" data-panduan="persiapan">PERSIAPAN</button>
+            <button class="tab-btn" data-panduan="keselamatan">KESELAMATAN</button>
+            <button class="tab-btn" data-panduan="etika">ETIKA</button>
+        </div>
+
+        <div class="terms-container" id="panduanContainer">
+        </div>
+
+        <div class="panduan-cta">
+            <p class="panduan-cta-text">Masih bingung memilih gear? Cukup informasikan gunung tujuan, durasi pendakian, jumlah peserta, dan tipe pendakian. Tim Pendakipack siap membantu.</p>
+            <button class="btn-map panduan-cta-btn" id="panduanCtaBtn">Chat Tim Kami</button>
+        </div>
+    </section>
 
     <!-- Modal Pop-up -->
     <div class="modal-overlay" id="productModal">
@@ -230,6 +256,7 @@
             <li><a href="#about">About</a></li>
             <li><a href="#catalog">Catalog</a></li>
             <li><a href="#faq">T&C</a></li>
+            <li><a href="#panduan">Panduan</a></li>
             <li><a href="#testimonial">Testimonial</a></li>
         </ul>
         
@@ -1288,6 +1315,128 @@ window.addEventListener('resize', () => {
         initTestimonialSwipe();
     }
 });
+
+// ============================================
+// PANDUAN PENDAKI - DATA & RENDER
+// ============================================
+const panduanData = {
+    tektok: [
+        { q: 'Apa itu tektok?', a: 'Tektok adalah pendakian tanpa camping atau menginap. Pendaki berangkat dan turun pada hari yang sama sehingga tidak perlu membawa perlengkapan besar seperti tenda, matras, dan sleeping bag. Meskipun terlihat lebih ringan, tektok tetap membutuhkan persiapan yang matang karena tubuh akan digunakan untuk aktivitas fisik dalam waktu yang cukup panjang.' },
+        { q: 'Apakah tektok cocok untuk pemula?', a: 'Ya, tektok sering menjadi pilihan pertama bagi pendaki pemula karena perlengkapannya lebih sederhana dan durasinya lebih singkat. Namun tetap pilih gunung yang sesuai kemampuan dan jangan meremehkan medan pendakian.' },
+        { q: 'Jam berapa sebaiknya memulai pendakian?', a: 'Sebagian besar pendaki memulai perjalanan antara dini hari hingga pagi hari. Selain udara yang lebih sejuk, waktu ini juga memberikan kesempatan untuk turun sebelum malam sehingga perjalanan menjadi lebih aman.' },
+        { q: 'Berapa lama durasi tektok?', a: 'Durasi sangat bergantung pada gunung yang didaki, kondisi jalur, cuaca, dan kemampuan fisik masing-masing orang. Ada gunung yang bisa diselesaikan dalam 6–8 jam, ada juga yang membutuhkan lebih dari 12 jam perjalanan.' }
+    ],
+    camping: [
+        { q: 'Apa perbedaan tektok dan camping?', a: 'Camping berarti pendaki bermalam di gunung sehingga membutuhkan perlengkapan tambahan seperti tenda, sleeping bag, matras, alat masak, serta logistik yang lebih banyak. Karena membawa beban lebih berat, persiapan fisik juga perlu diperhatikan.' },
+        { q: 'Apakah sleeping bag wajib?', a: 'Ya. Sleeping bag berfungsi menjaga suhu tubuh saat malam hari. Meskipun menggunakan jaket tebal, tidur tanpa sleeping bag di gunung sering kali tetap terasa sangat dingin.' },
+        { q: 'Mengapa perlu membawa matras?', a: 'Matras bukan hanya untuk kenyamanan tidur. Matras membantu mengurangi dingin dari tanah yang dapat langsung terserap oleh tubuh saat beristirahat.' },
+        { q: 'Berapa banyak makanan yang perlu dibawa?', a: 'Bawa makanan sesuai durasi pendakian dan selalu siapkan cadangan. Cuaca buruk atau kondisi tertentu bisa membuat perjalanan lebih lama dari rencana awal.' }
+    ],
+    gear: [
+        { q: 'Gear apa saja yang wajib dibawa saat mendaki?', a: 'Minimal membawa tas, jaket, air minum, makanan, jas hujan, headlamp, obat pribadi, dan alas kaki yang sesuai. Perlengkapan ini berfungsi untuk menjaga keamanan dan kenyamanan selama perjalanan.' },
+        { q: 'Apakah jaket gunung wajib?', a: 'Ya. Cuaca gunung bisa berubah dengan cepat. Siang hari mungkin terasa panas, tetapi saat berada di area puncak atau terkena angin kencang suhu dapat turun secara signifikan.' },
+        { q: 'Apakah bisa mendaki menggunakan sepatu biasa?', a: 'Bisa, tetapi kurang disarankan. Jalur gunung sering kali terdiri dari tanah, batu, akar pohon, dan medan licin. Sepatu hiking atau trail running memiliki grip yang lebih baik sehingga mengurangi risiko terpeleset.' },
+        { q: 'Mengapa headlamp penting?', a: 'Headlamp membantu penerangan saat pendakian dini hari, perjalanan malam, atau situasi darurat. Karena digunakan di kepala, kedua tangan tetap bebas untuk membantu menjaga keseimbangan.' },
+        { q: 'Apakah perlu membawa powerbank?', a: 'Sangat disarankan. Ponsel sering digunakan untuk komunikasi, dokumentasi, navigasi, dan keadaan darurat. Pastikan daya baterai tetap tersedia selama perjalanan.' },
+        { q: 'Mengapa dry bag penting?', a: 'Dry bag melindungi barang-barang penting seperti pakaian, dompet, sleeping bag, dan perangkat elektronik dari hujan atau kelembapan.' },
+        { q: 'Carrier berapa liter yang saya butuhkan?', list: ['Tektok: 15–30L', 'Camping 2 Hari 1 Malam: 40–50L', 'Camping 3 Hari 2 Malam: 50–65L', 'Ekspedisi: 65L+'], a: 'Memilih ukuran carrier yang tepat membuat barang lebih rapi dan nyaman dibawa selama pendakian.' }
+    ],
+    cuaca: [
+        { q: 'Seberapa dingin suhu di gunung?', a: 'Secara umum, semakin tinggi gunung maka suhu akan semakin rendah. Pada dini hari atau menjelang sunrise, suhu dapat terasa jauh lebih dingin dibanding siang hari.' },
+        { q: 'Apakah gunung tetap dingin saat musim kemarau?', a: 'Ya. Bahkan beberapa gunung mengalami suhu terdingin saat musim kemarau karena langit yang cerah membuat panas bumi lebih cepat hilang pada malam hari.' },
+        { q: 'Apakah jas hujan tetap perlu dibawa saat cuaca cerah?', a: 'Ya. Cuaca gunung sulit diprediksi dan dapat berubah dalam hitungan menit. Membawa jas hujan adalah langkah sederhana yang dapat mencegah banyak masalah selama pendakian.' },
+        { q: 'Apakah sinyal selalu tersedia di gunung?', a: 'Tidak. Beberapa area memiliki sinyal yang baik, sementara area lain mungkin tidak memiliki sinyal sama sekali. Karena itu, jangan bergantung sepenuhnya pada internet atau aplikasi online.' }
+    ],
+    persiapan: [
+        { q: 'Apakah perlu latihan fisik sebelum mendaki?', a: 'Sangat disarankan. Latihan sederhana seperti jogging, bersepeda, berenang, atau naik turun tangga dapat membantu tubuh beradaptasi dengan aktivitas pendakian.' },
+        { q: 'Mengapa harus cukup tidur sebelum mendaki?', a: 'Kurang tidur membuat tubuh lebih cepat lelah, sulit fokus, dan meningkatkan risiko cedera selama perjalanan.' },
+        { q: 'Apakah perlu sarapan sebelum mendaki?', a: 'Ya. Sarapan memberikan energi yang dibutuhkan tubuh untuk aktivitas fisik yang cukup berat selama pendakian.' },
+        { q: 'Mengapa perlu mempelajari jalur pendakian?', a: 'Mengetahui estimasi waktu, tingkat kesulitan, sumber air, dan titik istirahat dapat membantu pendakian menjadi lebih aman dan terencana.' },
+        { q: 'Apa yang perlu dicek sebelum berangkat?', a: 'Pastikan perlengkapan lengkap, cuaca mendukung, kondisi tubuh sehat, baterai perangkat terisi, dan seluruh anggota tim mengetahui rencana perjalanan.' }
+    ],
+    keselamatan: [
+        { q: 'Apa penyebab pendaki cepat kelelahan?', a: 'Biasanya karena kurang latihan fisik, kurang minum, kurang makan, membawa beban berlebihan, atau berjalan terlalu cepat sejak awal.' },
+        { q: 'Seberapa sering harus minum saat mendaki?', a: 'Minumlah secara berkala meskipun belum merasa haus. Tubuh yang terhidrasi dengan baik akan bekerja lebih optimal selama pendakian.' },
+        { q: 'Apa tanda-tanda dehidrasi?', a: 'Haus berlebihan, pusing, lemas, sakit kepala, kram otot, dan urine berwarna lebih pekat dari biasanya.' },
+        { q: 'Apa yang harus dilakukan jika merasa tidak kuat melanjutkan pendakian?', a: 'Istirahat terlebih dahulu, makan atau minum secukupnya, dan evaluasi kondisi tubuh. Jangan memaksakan diri hanya demi mencapai puncak.' },
+        { q: 'Apa yang harus dilakukan jika cuaca memburuk?', a: 'Gunakan perlengkapan hujan, cari tempat yang aman, dan pertimbangkan untuk menghentikan atau membatalkan pendakian jika kondisi dirasa berbahaya.' },
+        { q: 'Mengapa keselamatan lebih penting daripada puncak?', a: 'Puncak akan selalu ada dan bisa dicoba kembali di lain waktu. Keselamatan diri dan seluruh anggota tim harus menjadi prioritas utama dalam setiap pendakian.' }
+    ],
+    etika: [
+        { q: 'Apa itu Leave No Trace?', a: 'Prinsip yang mengajarkan pendaki untuk tidak meninggalkan sampah, tidak merusak alam, dan tidak mengganggu lingkungan sekitar selama pendakian.' },
+        { q: 'Bolehkah membuang sampah organik di gunung?', a: 'Tidak. Semua sampah yang dibawa naik, baik organik maupun anorganik, harus dibawa turun kembali.' },
+        { q: 'Mengapa harus menjaga kebersihan gunung?', a: 'Karena gunung adalah rumah bagi berbagai ekosistem dan juga tempat yang dinikmati oleh banyak orang. Menjaga kebersihan berarti ikut menjaga kelestarian alam.' },
+        { q: 'Mengapa harus menghormati pendaki lain?', a: 'Sikap saling menghargai membuat suasana pendakian lebih aman, nyaman, dan menyenangkan bagi semua orang.' }
+    ]
+};
+
+function renderPanduan(category) {
+    const container = document.getElementById('panduanContainer');
+    container.innerHTML = '';
+
+    panduanData[category].forEach((item, index) => {
+        const termId = `panduan-${category}-${index}`;
+        const termItem = document.createElement('div');
+        termItem.className = 'term-item';
+
+        let bodyHtml = '';
+        if (item.list) {
+            bodyHtml += '<ul>' + item.list.map(li => `<li>${li}</li>`).join('') + '</ul>';
+        }
+        if (item.a) {
+            bodyHtml += `<p>${item.a}</p>`;
+        }
+
+        termItem.innerHTML = `
+            <div class="term-header" data-panduan-term="${termId}">
+                <span class="term-name">${item.q}</span>
+                <svg class="term-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M7 10L12 15L17 10" stroke="#3A3734" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="term-content" id="${termId}">
+                ${bodyHtml}
+            </div>
+        `;
+        container.appendChild(termItem);
+    });
+
+    container.querySelectorAll('.term-header').forEach(header => {
+        header.addEventListener('click', function () {
+            const content = this.nextElementSibling;
+            const arrow = this.querySelector('.term-arrow');
+            const item = this.parentElement;
+
+            item.classList.toggle('active');
+
+            if (item.classList.contains('active')) {
+                arrow.style.transform = 'rotate(180deg)';
+                content.style.maxHeight = '600px';
+            } else {
+                arrow.style.transform = 'rotate(0deg)';
+                content.style.maxHeight = '0';
+            }
+        });
+    });
+}
+
+const panduanTabButtons = document.querySelectorAll('#panduanTabs .tab-btn');
+panduanTabButtons.forEach(btn => {
+    btn.addEventListener('click', function () {
+        panduanTabButtons.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        renderPanduan(this.dataset.panduan);
+    });
+});
+
+const panduanCtaBtn = document.getElementById('panduanCtaBtn');
+if (panduanCtaBtn) {
+    panduanCtaBtn.addEventListener('click', function () {
+        window.open('https://api.whatsapp.com/send/?phone=6285117835434&text&type=phone_number&app_absent=0', '_blank');
+    });
+}
+
+renderPanduan('tektok');
 
 </script>
 </body>
